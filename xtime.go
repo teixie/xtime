@@ -69,20 +69,17 @@ func Now() time.Time {
 
 // 获得今天的开始时间
 func Today() time.Time {
-	t := time.Now().In(GetLocation())
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, GetLocation())
+	return StartOfDay(time.Now().In(GetLocation()))
 }
 
 // 获得明天的开始时间
 func Tomorrow(args ...time.Time) time.Time {
-	t := findOrNow(args...).Add(24 * time.Hour)
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, GetLocation())
+	return StartOfDay(findOrNow(args...).Add(24 * time.Hour))
 }
 
 // 获得昨天的开始时间
 func Yesterday(args ...time.Time) time.Time {
-	t := findOrNow(args...).Add(-24 * time.Hour)
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, GetLocation())
+	return StartOfDay(findOrNow(args...).Add(-24 * time.Hour))
 }
 
 // 所在天的开始时间，如："2006-01-01 00:00:00"
@@ -100,15 +97,13 @@ func EndOfDay(args ...time.Time) time.Time {
 // 当前时间所在星期的开始时间，例："2006-01-02 00:00:00"
 func StartOfWeek(args ...time.Time) time.Time {
 	now := findOrNow(args...)
-	t := now.Add(-(time.Duration(now.Weekday()) - 1) * 24 * time.Hour)
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, GetLocation())
+	return StartOfDay(now.Add(-(time.Duration(now.Weekday()) - 1) * 24 * time.Hour))
 }
 
 // 当前时间所在星期的结束时间，例："2006-01-02 23:59:59"
 func EndOfWeek(args ...time.Time) time.Time {
 	now := findOrNow(args...)
-	t := now.Add((7 - time.Duration(now.Weekday())) * 24 * time.Hour)
-	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, GetLocation())
+	return EndOfDay(now.Add((7 - time.Duration(now.Weekday())) * 24 * time.Hour))
 }
 
 // 当前时间所在月的开始时间，例："2016-01-01 00:00:00"
