@@ -69,7 +69,7 @@ func Now() time.Time {
 
 // 获得今天的开始时间
 func Today() time.Time {
-	return StartOfDay(time.Now().In(GetLocation()))
+	return StartOfDay(Now())
 }
 
 // 获得明天的开始时间
@@ -96,39 +96,39 @@ func EndOfDay(args ...time.Time) time.Time {
 
 // 当前时间所在星期的开始时间，例："2006-01-02 00:00:00"
 func StartOfWeek(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	return StartOfDay(now.Add(-(time.Duration(now.Weekday()) - 1) * 24 * time.Hour))
+	t := findOrNow(args...)
+	return StartOfDay(t.Add(-(time.Duration(t.Weekday()) - 1) * 24 * time.Hour))
 }
 
 // 当前时间所在星期的结束时间，例："2006-01-02 23:59:59"
 func EndOfWeek(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	return EndOfDay(now.Add((7 - time.Duration(now.Weekday())) * 24 * time.Hour))
+	t := findOrNow(args...)
+	return EndOfDay(t.Add((7 - time.Duration(t.Weekday())) * 24 * time.Hour))
 }
 
 // 当前时间所在月的开始时间，例："2016-01-01 00:00:00"
 func StartOfMonth(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, GetLocation())
+	t := findOrNow(args...)
+	return time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, GetLocation())
 }
 
 // 当前时间所在月的结束时间，例："2016-01-31 23:59:59"
 func EndOfMonth(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	next := StartOfMonth(now).Add(31 * 24 * time.Hour)
+	t := findOrNow(args...)
+	next := StartOfMonth(t).Add(31 * 24 * time.Hour)
 	return time.Unix(StartOfMonth(next).Unix()-1, 0)
 }
 
 // 当前时间所在年的开始时间，例："2016-01-01 00:00:00"
 func StartOfYear(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	return time.Date(now.Year(), 1, 1, 0, 0, 0, 0, GetLocation())
+	t := findOrNow(args...)
+	return time.Date(t.Year(), 1, 1, 0, 0, 0, 0, GetLocation())
 }
 
 // 当前时间所在年的结束时间，例："2016-12-31 23:59:59"
 func EndOfYear(args ...time.Time) time.Time {
-	now := findOrNow(args...)
-	return time.Date(now.Year(), 12, 31, 23, 59, 59, 0, GetLocation())
+	t := findOrNow(args...)
+	return time.Date(t.Year(), 12, 31, 23, 59, 59, 0, GetLocation())
 }
 
 // 解析时间，支持time.Time/时间字符串/时间戳
